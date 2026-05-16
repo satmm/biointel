@@ -1,4 +1,4 @@
-const BASE = '/backend/api';
+const BASE = import.meta.env.VITE_API_BASE_URL || '/backend/api';
 
 export interface ApiSpecies {
   id: string;
