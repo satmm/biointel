@@ -1,0 +1,1435 @@
+You are a senior full-stack engineer and product designer. Build a complete, 
+production-quality web application called "BioIntel" — an AI-powered Species 
+Intelligence & Research Platform.
+
+This is a dark, cinematic, futuristic scientific platform. Think National 
+Geographic meets Linear.app meets a SpaceX mission interface. Every pixel 
+should feel premium and alive.
+
+====================================================
+TECH STACK — USE EXACTLY THESE
+====================================================
+
+Frontend:
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Framer Motion (animations)
+- Recharts (data charts)
+- React Force Graph (ecosystem network viz)
+- Lucide React (icons)
+
+Backend:
+- FastAPI (Python)
+- PostgreSQL + pgvector extension
+- Redis (via Upstash free tier)
+- Celery (async task queue)
+- SQLAlchemy ORM
+
+AI / ML:
+- Ollama (local LLM inference)
+- Llama 3.1 8B model (via Ollama)
+- BioCLIP (species identification - ONNX)
+- YOLOv8 nano (object detection - first pass)
+- BGE-M3 (text embeddings - ONNX)
+- Sentence Transformers
+
+Package manager: pnpm (frontend), pip (backend)
+
+====================================================
+COLOR SYSTEM — IMPLEMENT EXACTLY
+====================================================
+
+CSS Variables (globals.css):
+
+:root {
+  --void: #080C10;           /* primary background */
+  --void-2: #0D1117;         /* card backgrounds */
+  --void-3: #131920;         /* elevated surfaces */
+  --teal: #0FFFE8;           /* primary accent - bioluminescent */
+  --teal-dim: rgba(15,255,232,0.12);  /* teal tints */
+  --teal-glow: rgba(15,255,232,0.06); /* subtle backgrounds */
+  --amber: #F5A623;          /* warnings, confidence scores */
+  --amber-dim: rgba(245,166,35,0.12);
+  --red-ext: #FF3B5C;        /* endangered/critical status */
+  --red-dim: rgba(255,59,92,0.12);
+  --green-safe: #22C55E;     /* least concern status */
+  --purple-evo: #8B5CF6;     /* evolution/genomics theme */
+  --text-primary: #F0F6F6;   /* main text */
+  --text-secondary: rgba(240,246,246,0.5);  /* muted */
+  --text-tertiary: rgba(240,246,246,0.25);  /* hints */
+  --border: rgba(15,255,232,0.08);          /* default borders */
+  --border-hover: rgba(15,255,232,0.2);     /* hover borders */
+}
+
+====================================================
+TYPOGRAPHY SYSTEM
+====================================================
+
+Install and use these Google Fonts in layout.tsx:
+- Space Grotesk (weights: 400, 500, 700) — all headings and brand
+- Inter (weights: 400, 500) — body text and UI labels
+- JetBrains Mono (weights: 400, 500) — scientific names, 
+  coordinates, confidence scores, data values
+
+Tailwind font config (tailwind.config.ts):
+fontFamily: {
+  heading: ['Space Grotesk', 'sans-serif'],
+  body: ['Inter', 'sans-serif'],
+  mono: ['JetBrains Mono', 'monospace'],
+}
+
+Typography scale:
+- Hero headline: 72px / font-heading / weight 700 / tracking -0.02em
+- Section headline: 48px / font-heading / weight 700
+- Card title: 18px / font-heading / weight 500
+- Body: 16px / font-body / weight 400 / leading 1.7
+- Label: 13px / font-body / weight 500 / tracking 0.04em uppercase
+- Data value: 14px / font-mono / weight 500
+- Scientific name: 14px / font-mono italic / color --teal
+
+====================================================
+FOLDER STRUCTURE — CREATE ALL OF THESE
+====================================================
+
+biointel/
+├── frontend/
+│   ├── app/
+│   │   ├── layout.tsx              ← root layout, fonts, metadata
+│   │   ├── globals.css             ← all CSS variables + base styles
+│   │   ├── page.tsx                ← landing page (imports all sections)
+│   │   ├── analyze/
+│   │   │   └── page.tsx            ← upload + search page
+│   │   └── species/
+│   │       └── [id]/
+│   │           └── page.tsx        ← species intelligence result page
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Navbar.tsx
+│   │   │   └── Footer.tsx
+│   │   ├── landing/
+│   │   │   ├── HeroSection.tsx
+│   │   │   ├── AboutSection.tsx
+│   │   │   ├── HowItWorksSection.tsx
+│   │   │   ├── IntelligencePillarsSection.tsx
+│   │   │   ├── VisualizationPreviewSection.tsx
+│   │   │   └── FutureVisionSection.tsx
+│   │   ├── analyze/
+│   │   │   ├── UploadZone.tsx
+│   │   │   ├── SearchBar.tsx
+│   │   │   └── ExampleSpecies.tsx
+│   │   ├── species/
+│   │   │   ├── SpeciesHero.tsx
+│   │   │   ├── QuickFactsGrid.tsx
+│   │   │   ├── IntelligenceHub.tsx
+│   │   │   ├── tabs/
+│   │   │   │   ├── EvolutionTab.tsx
+│   │   │   │   ├── AnatomyTab.tsx
+│   │   │   │   ├── BehaviorTab.tsx
+│   │   │   │   ├── EcosystemTab.tsx
+│   │   │   │   └── ConservationTab.tsx
+│   │   │   └── visualizations/
+│   │   │       ├── PhylogenyTree.tsx
+│   │   │       ├── EcosystemGraph.tsx
+│   │   │       ├── PopulationChart.tsx
+│   │   │       └── ClimateRiskMap.tsx
+│   │   └── ui/
+│   │       ├── GlowCard.tsx
+│   │       ├── ScanOverlay.tsx
+│   │       ├── ConservationBadge.tsx
+│   │       ├── ConfidenceBar.tsx
+│   │       ├── DataPill.tsx
+│   │       ├── SectionLabel.tsx
+│   │       └── ParticleField.tsx
+│   ├── lib/
+│   │   ├── api.ts                  ← all API calls to FastAPI
+│   │   ├── types.ts                ← all TypeScript interfaces
+│   │   └── utils.ts
+│   ├── hooks/
+│   │   ├── useSpeciesAnalysis.ts
+│   │   └── useScrollReveal.ts
+│   └── public/
+│       └── placeholder-species/    ← 6 example species images
+├── backend/
+│   ├── main.py
+│   ├── routers/
+│   │   ├── identification.py
+│   │   ├── intelligence.py
+│   │   └── graph.py
+│   ├── services/
+│   │   ├── vision/
+│   │   │   ├── yolo_detector.py
+│   │   │   ├── bioclip_classifier.py
+│   │   │   └── pipeline.py
+│   │   ├── llm/
+│   │   │   ├── ollama_client.py
+│   │   │   └── prompt_templates.py
+│   │   ├── rag/
+│   │   │   ├── retriever.py
+│   │   │   └── generator.py
+│   │   └── graph/
+│   │       └── knowledge_graph.py
+│   ├── models/
+│   │   └── schemas.py
+│   └── db/
+│       ├── postgres.py
+│       └── redis_client.py
+└── docker-compose.yml
+
+====================================================
+PAGE 1: LANDING PAGE (app/page.tsx)
+====================================================
+
+The landing page is a single scrolling cinematic experience.
+Build every section below as a separate component and compose 
+them in page.tsx.
+
+------------------------------------------------------
+SECTION 1: NAVBAR (components/layout/Navbar.tsx)
+------------------------------------------------------
+
+Sticky top navbar. Background: transparent initially, 
+blurs to rgba(8,12,16,0.85) with backdrop-blur-xl on scroll.
+
+Left: Wordmark "BioIntel" in Space Grotesk 500, color --teal.
+      Small dot (6px circle, --teal) to the left of the text.
+
+Center: Navigation links — "Platform", "Research", "About"
+        Font: 13px Inter, color --text-secondary
+        On hover: color --text-primary, transition 200ms
+
+Right: "Try for free" button — outlined style
+       Border: 0.5px solid --border-hover
+       Color: --teal
+       On hover: background --teal-dim
+       Border-radius: 8px, padding: 8px 20px
+
+Add a thin 1px line below the navbar using --border color.
+
+------------------------------------------------------
+SECTION 2: HERO (components/landing/HeroSection.tsx)
+------------------------------------------------------
+
+Full-viewport-height section. Background --void.
+
+BACKGROUND EFFECTS (CSS only, no canvas):
+1. Subtle grid overlay: CSS background-image with 
+   1px lines every 60px, color rgba(15,255,232,0.03)
+   Use: background-image: 
+     linear-gradient(rgba(15,255,232,0.03) 1px, transparent 1px),
+     linear-gradient(90deg, rgba(15,255,232,0.03) 1px, transparent 1px);
+   background-size: 60px 60px;
+
+2. Radial glow orb centered top: 
+   position:absolute, width:800px, height:600px
+   background: radial-gradient(ellipse, 
+     rgba(15,255,232,0.04) 0%, transparent 70%)
+   top: -200px, left: 50%, translateX(-50%)
+
+3. Floating particles: Create 20 small circles (2-4px) 
+   scattered across the hero using absolute positioning.
+   Colors alternate between --teal (opacity 0.4) and 
+   --amber (opacity 0.3).
+   Animate each with a gentle float animation:
+   @keyframes float { 
+     0%,100% { transform: translateY(0px); }
+     50% { transform: translateY(-12px); }
+   }
+   Each particle gets a different animation-duration 
+   (4s to 10s) and animation-delay (0s to 5s).
+
+4. Scanning line: A horizontal line that sweeps down 
+   continuously:
+   @keyframes scan {
+     0% { top: 0%; opacity: 0; }
+     10% { opacity: 1; }
+     90% { opacity: 1; }
+     100% { top: 100%; opacity: 0; }
+   }
+   Height: 1px, background: linear-gradient(90deg, 
+   transparent, rgba(15,255,232,0.3), transparent)
+   animation: scan 8s linear infinite
+
+HERO CONTENT (centered, z-index above effects):
+
+Eyebrow label (above headline):
+  - Small pill: border 0.5px solid rgba(15,255,232,0.25)
+  - Border-radius: 100px (pill)
+  - Padding: 5px 14px
+  - Font: 11px JetBrains Mono, letter-spacing 0.12em
+  - Color: --teal
+  - Text: "AI-POWERED BIODIVERSITY INTELLIGENCE"
+  - Animate in: fade up with 0.3s delay
+
+Main headline (Framer Motion, fade up 0.5s delay):
+  Font: Space Grotesk, 64px desktop / 40px mobile
+  Weight: 700, line-height: 1.08, letter-spacing: -0.03em
+  Color: --text-primary
+  
+  Text: "Understand every living thing
+         on Earth."
+  
+  "on Earth." should be on its own line, 
+  color: --teal
+
+Subheadline (fade up 0.7s delay):
+  Font: Inter, 18px, color: --text-secondary, 
+  max-width: 500px, line-height: 1.65, centered
+  
+  Text: "Upload any species image and receive 
+  research-grade intelligence — from evolutionary 
+  lineage to conservation risk — powered by AI."
+
+CTA buttons (fade up 0.9s delay):
+  Row of 2 buttons, gap: 14px, centered
+
+  Button 1 — Primary:
+    Text: "Analyze a species"
+    Background: --teal
+    Color: #080C10 (dark text on light bg)
+    Border-radius: 8px
+    Padding: 14px 28px
+    Font: Space Grotesk 500, 15px
+    Hover: opacity 0.85, scale 1.02 (Framer Motion)
+    onClick: router.push('/analyze')
+
+  Button 2 — Secondary:
+    Text: "See how it works"
+    Background: transparent
+    Border: 0.5px solid rgba(255,255,255,0.12)
+    Color: --text-secondary
+    Hover: border-color rgba(255,255,255,0.25)
+    Same size as Button 1
+
+Stat bar below CTAs (fade in, 1.1s delay):
+  Three stats in a row, separated by vertical dividers
+  Each stat: value (large, Space Grotesk 700) + label (Inter 12px, muted)
+  
+  Stat 1: "450,000+" species supported
+  Stat 2: "7" research dimensions
+  Stat 3: "Real-time" AI analysis
+  
+  Border-top: 0.5px solid --border, padding-top: 32px, margin-top: 48px
+
+------------------------------------------------------
+SECTION 3: ABOUT (components/landing/AboutSection.tsx)
+------------------------------------------------------
+
+Background: --void. Padding: 120px vertical.
+
+Section label (reusable SectionLabel component):
+  - "01 / ABOUT THE PLATFORM"
+  - Font: 11px JetBrains Mono, color --teal, letter-spacing 0.12em
+  - Small line to the left (40px wide, 0.5px, --teal)
+
+Section headline:
+  "Not just identification.
+  Biological intelligence."
+  
+  Font: Space Grotesk 700, 48px
+  "Biological intelligence." — color: --teal
+
+Paragraph:
+  "BioIntel transforms a single photograph into a 
+  complete scientific profile. We combine computer 
+  vision, ecological databases, evolutionary trees, 
+  and large language models to generate insights 
+  that would take a researcher weeks to compile."
+  
+  Font: Inter 17px, color --text-secondary, 
+  max-width: 560px, line-height: 1.75
+
+Three feature cards below (grid, 3 columns on desktop, 1 on mobile):
+
+Card style (GlowCard component):
+  Background: --void-2
+  Border: 0.5px solid --border
+  Border-radius: 16px
+  Padding: 28px
+  On hover: border-color --border-hover, 
+  add subtle box-shadow: 0 0 40px rgba(15,255,232,0.04)
+  Transition: all 300ms
+
+Card 1:
+  Icon: Lucide "Dna" icon, 24px, color --purple-evo
+  Title: "Evolutionary lineage"
+  Body: "Trace ancestry back millions of years. 
+  Understand clade relationships and divergence events."
+
+Card 2:
+  Icon: Lucide "Globe" icon, 24px, color --teal
+  Title: "Ecological context"
+  Body: "Map predator-prey networks, habitat 
+  dependencies, and keystone ecosystem roles."
+
+Card 3:
+  Icon: Lucide "ShieldAlert" icon, 24px, color --amber
+  Title: "Conservation intelligence"
+  Body: "Real-time IUCN status, population 
+  trends, and climate vulnerability scoring."
+
+------------------------------------------------------
+SECTION 4: HOW IT WORKS 
+(components/landing/HowItWorksSection.tsx)
+------------------------------------------------------
+
+Background: --void-2 (slightly elevated from void).
+Padding: 120px vertical.
+
+Section label: "02 / HOW IT WORKS"
+Section headline: "From image to insight in seconds."
+
+Five steps in a horizontal timeline on desktop, 
+vertical on mobile.
+
+Each step has:
+- Step number: 01, 02, 03, 04, 05
+  Font: JetBrains Mono, 11px, color --teal, 
+  letter-spacing 0.1em
+- Icon (Lucide): 28px, in a 56px circle container
+  Circle background: var(--teal-dim)
+  Icon color: --teal
+- Title: Space Grotesk 500, 16px
+- Description: Inter 14px, --text-secondary
+
+Connecting line between steps: 
+  1px horizontal line, --border color, 
+  drawn between the icon circles
+
+Steps:
+  01 — Upload (icon: ImagePlus) 
+       "Upload any species image or drag and drop"
+  02 — Detect (icon: ScanSearch) 
+       "YOLOv8 locates the subject in the frame"
+  03 — Identify (icon: Microscope) 
+       "BioCLIP matches against 450,000 species"
+  04 — Research (icon: BookOpenText) 
+       "AI retrieves and synthesizes scientific data"
+  05 — Insights (icon: Sparkles) 
+       "7-dimension intelligence report generated"
+
+Each step card animates in on scroll using 
+Framer Motion's whileInView with staggered delays:
+  initial: { opacity: 0, y: 20 }
+  whileInView: { opacity: 1, y: 0 }
+  transition: { delay: index * 0.15 }
+  viewport: { once: true }
+
+------------------------------------------------------
+SECTION 5: INTELLIGENCE PILLARS 
+(components/landing/IntelligencePillarsSection.tsx)
+------------------------------------------------------
+
+Background: --void. Padding: 120px vertical.
+
+Section label: "03 / RESEARCH DIMENSIONS"
+Section headline: "Seven layers of biological understanding."
+
+Grid of 7 cards (3 + 3 + 1 centered on desktop):
+
+Each pillar card:
+  Background: --void-2
+  Border: 0.5px solid --border
+  Border-radius: 16px
+  Padding: 24px
+  Min-height: 160px
+  On hover: scale 1.02 (Framer Motion whileHover)
+  On hover: border-color changes to the pillar's accent color
+  
+  Contains:
+    - Accent line at top: 2px wide, 32px tall, 
+      positioned left edge, border-radius 0 (it's a left accent bar)
+      Actually: a 2px × 32px vertical line, left: -0.5px
+      NO: Use a small colored indicator dot instead —
+      8px circle, top-right corner of card
+    - Icon: 22px, color = pillar accent
+    - Title: Space Grotesk 500, 16px
+    - Short text: Inter 13px, --text-secondary
+
+Pillar 1 — accent: --purple-evo (#8B5CF6)
+  Icon: GitBranch (Lucide)
+  Title: "Evolution & phylogeny"
+  Text: "Lineage, cladistics, divergence timelines"
+
+Pillar 2 — accent: --teal (#0FFFE8)
+  Icon: Scan (Lucide)
+  Title: "Morphology & anatomy"
+  Text: "Adaptive traits, biomechanics, physiology"
+
+Pillar 3 — accent: #F97316 (orange)
+  Icon: Thermometer (Lucide)
+  Title: "Ecophysiology"
+  Text: "Thermal tolerance, energy allocation"
+
+Pillar 4 — accent: --amber (#F5A623)
+  Icon: Activity (Lucide)
+  Title: "Behavioral ecology"
+  Text: "Hunting, migration, social structures"
+
+Pillar 5 — accent: --green-safe (#22C55E)
+  Icon: Network (Lucide)
+  Title: "Population ecology"
+  Text: "Predator-prey dynamics, ecosystem roles"
+
+Pillar 6 — accent: --purple-evo (#8B5CF6)
+  Icon: Dna (Lucide)
+  Title: "Genomics & molecular"
+  Text: "Adaptation genes, selection signatures"
+
+Pillar 7 — accent: --red-ext (#FF3B5C)
+  Icon: ShieldAlert (Lucide)
+  Title: "Conservation & climate"
+  Text: "Extinction risk, habitat loss, climate models"
+
+------------------------------------------------------
+SECTION 6: VISUALIZATION PREVIEW
+(components/landing/VisualizationPreviewSection.tsx)
+------------------------------------------------------
+
+Background: --void-2. Padding: 120px vertical.
+
+Section label: "04 / VISUALIZATIONS"
+Section headline: "See the web of life."
+
+Two-column layout on desktop: left column has text,
+right column has a live interactive demo.
+
+Left column:
+  Headline: "Ecosystem relationships, 
+  visualized in real time."
+  Body: "Explore predator-prey networks, evolutionary 
+  trees, population heatmaps and climate risk models. 
+  Every relationship between species, rendered as 
+  interactive intelligence."
+  
+  Feature list (4 items with --teal bullet dots):
+  • Phylogenetic evolution trees
+  • Predator-prey force graphs  
+  • Population trend charts
+  • Climate vulnerability maps
+
+Right column — Live mock visualization:
+  Create a React component that renders a small 
+  force-directed graph using React Force Graph 2D.
+  
+  Use this STATIC mock data (no API call):
+  
+  const mockNodes = [
+    { id: "Tiger", group: "predator", val: 18 },
+    { id: "Deer", group: "prey", val: 14 },
+    { id: "Rabbit", group: "prey", val: 10 },
+    { id: "Eagle", group: "predator", val: 16 },
+    { id: "Mouse", group: "prey", val: 8 },
+    { id: "Fox", group: "predator", val: 12 },
+    { id: "Grassland", group: "habitat", val: 6 },
+    { id: "Forest", group: "habitat", val: 6 },
+  ]
+  
+  const mockLinks = [
+    { source: "Tiger", target: "Deer" },
+    { source: "Tiger", target: "Rabbit" },
+    { source: "Eagle", target: "Mouse" },
+    { source: "Eagle", target: "Rabbit" },
+    { source: "Fox", target: "Rabbit" },
+    { source: "Fox", target: "Mouse" },
+    { source: "Tiger", target: "Forest" },
+    { source: "Grassland", target: "Deer" },
+    { source: "Grassland", target: "Rabbit" },
+  ]
+  
+  Node color by group:
+    predator: #FF3B5C
+    prey: #0FFFE8  
+    habitat: #22C55E
+  
+  Canvas background: #0D1117
+  Link color: rgba(15,255,232,0.2)
+  Node label: white, 12px
+  
+  Wrap in a container: border 0.5px solid --border,
+  border-radius: 16px, overflow: hidden, 
+  height: 420px on desktop
+
+------------------------------------------------------
+SECTION 7: FUTURE VISION
+(components/landing/FutureVisionSection.tsx)
+------------------------------------------------------
+
+Background: --void. Padding: 120px vertical.
+
+Full-width centered layout.
+
+Section label: "05 / THE MISSION"
+
+Large centered headline:
+  "Every species. Every relationship.
+  Every insight. Accessible to anyone."
+
+Subtext centered below: 
+  Font: Inter 18px, --text-secondary, max-width 600px
+  "We believe biodiversity intelligence should be 
+  open, fast, and beautiful. BioIntel is being built 
+  for researchers, educators, conservationists, and 
+  the simply curious."
+
+Three large stat cards in a row:
+  Card style: --void-2 background, border --border,
+  border-radius 20px, padding 40px, text centered
+
+  Card 1: 
+    Number: "8.7M" — font Space Grotesk 700, 52px, color --teal
+    Label: "estimated species on Earth"
+  
+  Card 2:
+    Number: "1M+" — 52px, color --amber
+    Label: "threatened with extinction"
+  
+  Card 3:
+    Number: "3%" — 52px, color --red-ext
+    Label: "have been scientifically described"
+
+Final CTA block centered below stats:
+  Headline: "Start exploring." (Space Grotesk 700, 36px)
+  Button: same as hero primary CTA, text "Analyze a species"
+
+------------------------------------------------------
+FOOTER (components/layout/Footer.tsx)
+------------------------------------------------------
+
+Background: --void-2
+Border-top: 0.5px solid --border
+Padding: 48px 40px
+
+Two rows:
+Row 1: Wordmark left, nav links right (same as navbar)
+Row 2: Copyright left ("© 2025 BioIntel"), 
+       "Built for science." right, color --text-tertiary
+
+====================================================
+PAGE 2: ANALYZE PAGE (app/analyze/page.tsx)
+====================================================
+
+Background: --void. 
+This is where users upload images or search species.
+
+Header (centered, padding-top: 80px):
+  Eyebrow: "SPECIES ANALYSIS" (same pill style as hero)
+  Headline: "What are you studying today?"
+  Font: Space Grotesk 700, 42px
+  Subtext: "Upload an image or search by name to 
+  generate a complete research intelligence profile."
+
+------------------------------------------------------
+UPLOAD ZONE (components/analyze/UploadZone.tsx)
+------------------------------------------------------
+
+Large drag-and-drop zone, centered, max-width 640px.
+
+Normal state:
+  Background: --void-2
+  Border: 1.5px dashed rgba(15,255,232,0.2)
+  Border-radius: 20px
+  Padding: 60px 40px
+  Min-height: 280px
+  Cursor: pointer
+  
+  Center content:
+    - Upload icon (Lucide "ImagePlus", 40px, --teal, opacity 0.6)
+    - Text: "Drop your species image here"
+      Font: Space Grotesk 500, 18px, --text-primary
+    - Subtext: "or click to browse"
+      Font: Inter 14px, --text-secondary
+    - Formats pill: "JPG · PNG · WEBP · up to 10MB"
+      Font: JetBrains Mono 11px, --text-tertiary
+      Border: 0.5px solid --border, border-radius 100px, 
+      padding 4px 12px, margin-top 12px
+
+Drag-active state (when file is being dragged over):
+  Border: 1.5px dashed --teal
+  Background: rgba(15,255,232,0.04)
+  Scale: 1.01 (Framer Motion)
+  Add pulsing animation to the upload icon:
+  @keyframes pulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+
+File selected state (image preview):
+  Show the selected image in the zone (object-fit: cover)
+  Overlay a scan effect on the image:
+    A horizontal scanning line that sweeps down 
+    once over 2 seconds when image loads, then stops.
+    Line: 1px, background: linear-gradient(90deg, 
+    transparent, --teal, transparent), opacity 0.7
+  
+  Bottom overlay strip:
+    Background: rgba(8,12,16,0.85)
+    Shows filename and "Change image" link
+  
+  Below the zone, show:
+    "Analyze" button — primary style, full width, 
+    text: "Analyze this species →"
+    Loading state: "Scanning image..." with a 
+    Loader2 icon spinning (Lucide)
+
+------------------------------------------------------
+SEARCH TAB (components/analyze/SearchBar.tsx)
+------------------------------------------------------
+
+Toggle between "Upload Image" and "Search by name"
+using two tab pills above the zone.
+
+Tab style: 
+  Background: --void-3
+  Border: 0.5px solid --border
+  Border-radius: 100px
+  Padding: 6px
+  The two tabs sit inside this container
+  Active tab: background --teal-dim, border --border-hover,
+  color --teal
+  Inactive tab: color --text-secondary
+
+Search input:
+  Background: --void-2
+  Border: 0.5px solid --border
+  Border-radius: 12px
+  Padding: 16px 20px
+  Font: Inter 16px
+  Color: --text-primary
+  Placeholder: "e.g. Bengal Tiger, Monarch Butterfly..."
+  Placeholder color: --text-tertiary
+  On focus: border-color --border-hover, 
+  box-shadow: 0 0 0 3px rgba(15,255,232,0.08)
+  
+  Search icon inside: Lucide "Search", 18px, 
+  positioned right side, color --text-tertiary
+
+------------------------------------------------------
+EXAMPLE SPECIES (components/analyze/ExampleSpecies.tsx)
+------------------------------------------------------
+
+Below the upload zone:
+
+Label: "Try an example" — Inter 13px, --text-tertiary
+
+6 example species chips in a flex-wrap row:
+  Each chip: 
+    Background: --void-2
+    Border: 0.5px solid --border
+    Border-radius: 100px
+    Padding: 8px 16px
+    Font: Inter 13px, --text-secondary
+    On hover: border --border-hover, color --text-primary
+    Cursor: pointer
+  
+  Species: "Bengal Tiger" · "Monarch Butterfly" · 
+  "Humpback Whale" · "Venus Flytrap" · 
+  "Emperor Penguin" · "Komodo Dragon"
+  
+  On click: populate search and navigate to 
+  /species/[slug] with mock data
+
+====================================================
+PAGE 3: SPECIES RESULT PAGE
+(app/species/[id]/page.tsx)
+====================================================
+
+This is the main intelligence experience.
+The most complex and important page.
+
+------------------------------------------------------
+SECTION A: SPECIES HERO
+(components/species/SpeciesHero.tsx)
+------------------------------------------------------
+
+Full-width section. Min-height: 500px.
+Two-column layout on desktop:
+
+LEFT COLUMN (50%):
+  The species image in a stylized container.
+  
+  Image container:
+    Border-radius: 20px
+    Border: 0.5px solid --border
+    Overflow: hidden
+    Position: relative
+    Aspect-ratio: 4/3
+    
+  Overlay effects on the image:
+    1. Dark gradient at bottom: 
+       background: linear-gradient(to top, 
+       rgba(8,12,16,0.9) 0%, transparent 50%)
+    
+    2. Corner brackets (purely decorative, pure CSS):
+       Four small L-shaped brackets in the corners, 
+       2px thick lines, color --teal, opacity 0.6
+       Size: 20px. Add using ::before/::after or 
+       absolute positioned divs.
+       
+    3. AI scanning animation (plays once on load):
+       A teal horizontal line sweeps from top to bottom 
+       over 1.5 seconds once, then fades out.
+       
+    4. Bottom overlay text (absolute, bottom of image):
+       Scientific name in JetBrains Mono italic, 
+       14px, color --teal
+       e.g. "Panthera tigris tigris"
+
+RIGHT COLUMN (50%):
+  Content stacked vertically:
+  
+  Conservation badge (ConservationBadge component):
+    Pill-shaped badge, colored by IUCN status:
+    - "Endangered" — background --red-dim, 
+      color --red-ext, border rgba(255,59,92,0.3)
+    - "Vulnerable" — background --amber-dim,
+      color --amber
+    - "Least Concern" — background rgba(34,197,94,0.12),
+      color --green-safe
+    - "Critical" — same as Endangered but brighter
+    
+    Font: JetBrains Mono 11px, letter-spacing 0.1em,
+    padding: 5px 14px, border-radius: 100px
+
+  Species common name:
+    Font: Space Grotesk 700, 48px
+    Color: --text-primary
+    e.g. "Bengal Tiger"
+  
+  Scientific name:
+    Font: JetBrains Mono 400 italic, 18px, color --teal
+    e.g. "Panthera tigris tigris"
+
+  Taxonomy breadcrumb:
+    Horizontal chain: Kingdom → Phylum → Class → Order → Family
+    Each item: JetBrains Mono 12px, --text-tertiary
+    Separator: " / " in --border color
+    
+  AI confidence bar (ConfidenceBar component):
+    Label row: "AI identification confidence" (left, 13px Inter),
+               "94.7%" (right, JetBrains Mono 500, --teal)
+    Bar container: height 4px, background --void-3, border-radius 2px
+    Bar fill: animates from 0 to the value on mount over 1 second
+    Fill color: --teal
+    
+  Two quick action buttons:
+    "Download report" — secondary style, Lucide "Download" icon
+    "Share species" — secondary style, Lucide "Share2" icon
+
+------------------------------------------------------
+SECTION B: QUICK FACTS GRID
+(components/species/QuickFactsGrid.tsx)
+------------------------------------------------------
+
+Grid of 6 fact cards. 3 columns on desktop, 
+2 on tablet, 1 on mobile.
+
+Each fact card:
+  Background: --void-2
+  Border: 0.5px solid --border
+  Border-radius: 12px
+  Padding: 20px 24px
+  
+  Row 1: Icon (18px, colored) + Label (12px, JetBrains Mono, 
+  --text-tertiary, uppercase, letter-spacing 0.08em)
+  Row 2: Value (Space Grotesk 500, 24px, --text-primary)
+  
+  Cards:
+  1. Icon: MapPin (--teal)     Label: "HABITAT"       Value: "Tropical Forest"
+  2. Icon: Clock (--amber)     Label: "LIFESPAN"      Value: "10–15 years"
+  3. Icon: Utensils (--red-ext) Label: "DIET"         Value: "Carnivore"
+  4. Icon: Zap (--green-safe)  Label: "TOP SPEED"     Value: "65 km/h"
+  5. Icon: Users (--purple-evo) Label: "POPULATION"  Value: "~3,900 wild"
+  6. Icon: TrendingDown (--red-ext) Label: "TREND"    Value: "Declining ↓"
+    (use red color for "Declining", teal for "Stable", 
+    green for "Increasing")
+
+------------------------------------------------------
+SECTION C: INTELLIGENCE HUB
+(components/species/IntelligenceHub.tsx)
+------------------------------------------------------
+
+This is the core of the product experience.
+A tabbed interface with 5 research dimensions.
+
+Tab bar:
+  Horizontal scrollable list of 5 tabs.
+  Container: border-bottom 0.5px solid --border
+  
+  Each tab:
+    Padding: 14px 20px
+    Font: Inter 14px, 500
+    Color: --text-secondary (inactive)
+    Color: --text-primary (active)
+    Cursor: pointer
+    
+    Active indicator: 2px bottom border, 
+    color = tab's accent color (not always --teal)
+    
+    Animated: Framer Motion layoutId on the indicator
+    
+  Tabs with their accent colors:
+  1. "Evolution" — accent: --purple-evo, Icon: GitBranch 14px
+  2. "Anatomy" — accent: --teal, Icon: Scan 14px
+  3. "Behavior" — accent: --amber, Icon: Activity 14px
+  4. "Ecosystem" — accent: --green-safe, Icon: Network 14px
+  5. "Conservation" — accent: --red-ext, Icon: ShieldAlert 14px
+
+Tab content panel (below tab bar, padding: 40px 0):
+  Animate tab switching with Framer Motion:
+  initial: { opacity: 0, x: 10 }
+  animate: { opacity: 1, x: 0 }
+  transition: { duration: 0.25 }
+
+=== TAB 1: EVOLUTION (components/species/tabs/EvolutionTab.tsx) ===
+
+Two-column layout.
+
+Left column:
+  Intelligence summary card:
+    Background: --void-2, border: --border, 
+    border-radius: 16px, padding: 28px
+    
+    Header row: GitBranch icon (--purple-evo, 18px) + 
+    "Evolutionary lineage" (Space Grotesk 500, 16px)
+    
+    Body text: Inter 15px, --text-secondary, line-height 1.75
+    Use this mock text:
+    "The Bengal Tiger (Panthera tigris tigris) belongs 
+    to the Felidae family, sharing common ancestry with 
+    lions, leopards and jaguars through the Panthera 
+    lineage that diverged approximately 10.8 million 
+    years ago. Its subspecies split from the Siberian 
+    tiger ancestor roughly 72,000 years ago during the 
+    last glacial maximum, a period that created isolated 
+    population pockets across South Asia."
+    
+    Below text: Two data pills in a row
+    DataPill component: 
+      Background: rgba(139,92,246,0.1)
+      Border: 0.5px solid rgba(139,92,246,0.25)
+      Border-radius: 100px, padding: 4px 12px
+      Font: JetBrains Mono 12px, color --purple-evo
+      Text examples: "Diverged: 10.8M years ago" 
+                     "Clade: Pantherinae"
+
+Right column:
+  Phylogenetic tree visualization 
+  (components/species/visualizations/PhylogenyTree.tsx):
+  
+  Build a simple SVG-based phylogenetic tree.
+  Use React and inline SVG. No external library.
+  
+  Mock tree structure:
+  Felidae (root)
+  ├── Panthera
+  │   ├── P. tigris (Tiger) ← HIGHLIGHTED
+  │   ├── P. leo (Lion)
+  │   ├── P. pardus (Leopard)
+  │   └── P. onca (Jaguar)
+  └── Acinonyx
+      └── A. jubatus (Cheetah)
+  
+  Style:
+    Background: --void-2, border-radius: 16px, 
+    padding: 24px, border: 0.5px solid --border
+    Lines: 1px, color --border
+    Node circles: 8px radius, fill --void-3, 
+    stroke --border
+    Highlighted node (Tiger): fill --purple-evo, 
+    stroke rgba(139,92,246,0.5), slightly larger (10px)
+    Labels: JetBrains Mono 12px, --text-secondary
+    Highlighted label: --text-primary, font-weight 500
+
+=== TAB 2: ANATOMY (components/species/tabs/AnatomyTab.tsx) ===
+
+Full-width, 2 columns.
+
+Left: Text intelligence card (same style as above)
+  Body text about adaptive traits, morphology.
+  Mock text: "The Bengal Tiger's striped coat is its 
+  most iconic adaptation — each individual's pattern 
+  is unique, functioning as camouflage in dappled forest 
+  light. Their retractile claws stay sharp by avoiding 
+  ground contact during movement. The larynx modification 
+  that enables roaring represents a trade-off: unlike 
+  smaller cats, Bengal Tigers cannot purr continuously."
+
+Right: A grid of 4 anatomy fact cards
+  Each: background --void-2, border --border, 
+  border-radius: 12px, padding: 20px
+  
+  Label: JetBrains Mono 11px, --teal, uppercase
+  Value: Space Grotesk 500, 20px
+  Sub: Inter 13px, --text-secondary
+  
+  Cards:
+  - Label: "BODY LENGTH" / Value: "270–310 cm" / Sub: "nose to tail"
+  - Label: "WEIGHT" / Value: "220 kg" / Sub: "adult male"
+  - Label: "CANINE LENGTH" / Value: "7.5–10 cm" / Sub: "longest in Panthera"
+  - Label: "STRIDE LENGTH" / Value: "4.8 m" / Sub: "at full sprint"
+
+=== TAB 3: BEHAVIOR (components/species/tabs/BehaviorTab.tsx) ===
+
+Three intelligence cards in a grid (3 columns on desktop):
+
+Card 1 — Hunting behavior
+  Icon: Target (Lucide, --amber)
+  Title: "Hunting strategy"
+  Content: "Solitary ambush predator. Hunts primarily 
+  at dusk and dawn. Success rate: ~5% of hunts."
+  
+  Mini bar chart below (Recharts BarChart):
+    Data: prey breakdown by percentage
+    { name: 'Deer', value: 45 }
+    { name: 'Boar', value: 28 }
+    { name: 'Cattle', value: 18 }
+    { name: 'Other', value: 9 }
+    Bar color: --amber
+    Minimal style: no grid, no axis labels except names,
+    height: 120px
+
+Card 2 — Migration and territory
+  Icon: Map (Lucide, --teal)
+  Title: "Territory"
+  Content: "Males maintain territories of 60–100 km².
+  Females overlap male territories but rarely 
+  overlap each other."
+  
+  A simple territory size comparison bar:
+    Tiger: ████████████ 100 km²
+    Lion: ████████ 65 km²  
+    Leopard: ████ 30 km²
+    Use colored thin bars (--teal), stacked list style
+
+Card 3 — Reproduction
+  Icon: Heart (Lucide, --purple-evo)
+  Title: "Reproduction"
+  Content: "Gestation: 93–110 days. Litter: 2–4 cubs.
+  Cubs stay with mother for 2–3 years before 
+  establishing territories."
+  
+  Timeline below:
+    Horizontal line with 4 milestone dots:
+    "Mating" → "Gestation (105d)" → "Birth" → "Independence (2-3yr)"
+    Dot style: 8px circle, --purple-evo fill
+    Line: 1px, --border
+
+=== TAB 4: ECOSYSTEM (components/species/tabs/EcosystemTab.tsx) ===
+
+Full-width force graph section.
+
+Label: "Ecosystem relationship network"
+Sub: "Nodes sized by ecological importance. 
+     Lines show interaction type."
+
+Force graph using React Force Graph 2D (same setup 
+as landing page but richer data):
+
+Mock ecosystem data for Bengal Tiger:
+nodes:
+  { id: "Bengal Tiger", group: "focal", val: 20 }
+  { id: "Chital Deer", group: "prey", val: 14 }
+  { id: "Sambar Deer", group: "prey", val: 14 }
+  { id: "Wild Boar", group: "prey", val: 12 }
+  { id: "Gaur", group: "prey", val: 10 }
+  { id: "Leopard", group: "competitor", val: 13 }
+  { id: "Dhole", group: "competitor", val: 10 }
+  { id: "Vulture", group: "scavenger", val: 8 }
+  { id: "Jackal", group: "scavenger", val: 7 }
+  { id: "Tropical Forest", group: "habitat", val: 6 }
+  { id: "Grassland", group: "habitat", val: 5 }
+
+links:
+  Tiger → Chital Deer (predation)
+  Tiger → Sambar Deer (predation)
+  Tiger → Wild Boar (predation)
+  Tiger → Gaur (predation)
+  Tiger — Leopard (competition)
+  Tiger — Dhole (competition)
+  Vulture → Tiger (scavenges kills)
+  Jackal → Tiger (scavenges kills)
+  Tiger → Tropical Forest (depends on)
+  Chital Deer → Grassland (grazes)
+
+Node colors:
+  focal: #0FFFE8 (the species being analyzed)
+  prey: #85B7EB (blue)
+  competitor: #F97316 (orange)
+  scavenger: #888780 (gray)
+  habitat: #22C55E (green)
+
+Height: 480px. Canvas bg: #0D1117.
+Link color based on type:
+  predation: rgba(255,59,92,0.3)
+  competition: rgba(245,166,35,0.3)
+  default: rgba(15,255,232,0.15)
+
+Legend below the graph:
+  Small colored dots + labels for each group type.
+  Horizontal row, Inter 12px.
+
+Below the graph: 2 intelligence text cards side by side
+  Card 1: "Keystone role" — text about Tiger's role 
+  as apex predator regulating prey populations.
+  Card 2: "Trophic cascade" — text about downstream 
+  effects of tiger presence on vegetation.
+
+=== TAB 5: CONSERVATION (components/species/tabs/ConservationTab.tsx) ===
+
+Three sections:
+
+1. Status header row:
+   Big IUCN status badge (large version, not pill)
+   Background: --red-dim, color: --red-ext
+   Font: Space Grotesk 700, 32px: "Endangered"
+   Sub: "IUCN Red List · 2023 Assessment"
+   
+   Three stat cards beside it:
+   - "3,900" wild individuals remaining
+   - "93%" population decline since 1900
+   - "40%" habitat lost in 20 years
+   (Use the same fact card style from QuickFactsGrid)
+
+2. Population trend chart 
+   (components/species/visualizations/PopulationChart.tsx):
+   
+   Recharts LineChart showing population over time.
+   
+   Mock data:
+   [
+     { year: 1900, population: 100000 },
+     { year: 1920, population: 60000 },
+     { year: 1940, population: 30000 },
+     { year: 1960, population: 15000 },
+     { year: 1980, population: 7000 },
+     { year: 2000, population: 4000 },
+     { year: 2010, population: 3200 },
+     { year: 2020, population: 3900 },
+     { year: 2024, population: 3900 },
+   ]
+   
+   Chart style:
+   Background: --void-2, border-radius: 16px, padding: 24px
+   Line color: --red-ext
+   Fill under line: rgba(255,59,92,0.08)
+   Grid lines: rgba(255,255,255,0.04)
+   Axis labels: JetBrains Mono 11px, --text-tertiary
+   Dot on last point: --red-ext, pulsing animation
+   
+   Add a reference line at year 2010 with label 
+   "Conservation efforts begin" in --teal
+
+3. Threat factors list:
+   Title: "Primary threats"
+   4 threat items, each with:
+   - Icon: AlertTriangle (Lucide, --red-ext, 16px)
+   - Threat name (Inter 14px, --text-primary)
+   - Impact level bar: thin 6px bar, 
+     color --red-ext, width based on severity %
+   
+   Threats:
+   - "Habitat loss and fragmentation" — 85%
+   - "Poaching and illegal trade" — 70%
+   - "Human-wildlife conflict" — 55%
+   - "Prey base depletion" — 45%
+
+====================================================
+REUSABLE UI COMPONENTS (components/ui/)
+====================================================
+
+Build these as reusable components:
+
+--- GlowCard.tsx ---
+Props: children, accentColor (optional), className
+Default border: 0.5px solid --border
+Hover: border-color = accentColor (or --border-hover)
+Hover: subtle box-shadow 0 0 0 1px accentColor 
+at 20% opacity
+Transition: all 300ms ease
+Background: --void-2
+Border-radius: 16px
+Padding: 28px
+
+--- ConservationBadge.tsx ---
+Props: status: 'CR' | 'EN' | 'VU' | 'NT' | 'LC' | 'EX'
+Maps status to color and full label.
+Pill style.
+
+--- ConfidenceBar.tsx ---
+Props: value (0-100), label
+Animated fill on mount.
+
+--- DataPill.tsx ---
+Props: children, color (hex)
+Small rounded pill with colored border and text.
+
+--- SectionLabel.tsx ---
+Props: number, text
+Renders "01 / SECTION NAME" with teal line.
+
+--- ParticleField.tsx ---
+Renders the floating particle background effect.
+20 particles, CSS-only animation, 
+absolute positioned within its container.
+
+====================================================
+TYPESCRIPT TYPES (lib/types.ts)
+====================================================
+
+Define all types:
+
+interface Species {
+  id: string
+  commonName: string
+  scientificName: string
+  kingdom: string
+  phylum: string
+  class: string
+  order: string
+  family: string
+  genus: string
+  iucnStatus: 'EX' | 'EW' | 'CR' | 'EN' | 'VU' | 'NT' | 'LC' | 'DD'
+  habitat: string
+  lifespan: string
+  diet: 'Carnivore' | 'Herbivore' | 'Omnivore' | 'Insectivore'
+  topSpeed: string
+  population: string
+  populationTrend: 'Increasing' | 'Stable' | 'Declining' | 'Unknown'
+  imageUrl: string
+  thumbnailUrl: string
+}
+
+interface IntelligenceReport {
+  speciesId: string
+  dimension: 'evolution' | 'anatomy' | 'behavior' | 'ecosystem' | 'conservation'
+  content: string
+  citations: Citation[]
+  confidence: number
+  generatedAt: string
+  cached: boolean
+}
+
+interface Citation {
+  source: string
+  url: string
+  title: string
+  year: number
+}
+
+interface IdentificationResult {
+  species: Species
+  confidence: number
+  top5: Array<{ species: Species; confidence: number }>
+  processingTime: number
+  model: string
+}
+
+interface EcosystemNode {
+  id: string
+  group: 'focal' | 'prey' | 'predator' | 'competitor' | 'scavenger' | 'habitat'
+  val: number
+}
+
+interface EcosystemLink {
+  source: string
+  target: string
+  type: 'predation' | 'competition' | 'scavenging' | 'habitat'
+}
+
+====================================================
+MOCK DATA (lib/mockData.ts)
+====================================================
+
+Create a complete mock data file so the UI works 
+without a real backend. Use Bengal Tiger as the 
+primary example.
+
+Export:
+- mockBengalTiger: Species
+- mockBengalTigerReports: Record<string, IntelligenceReport>
+- mockBengalTigerEcosystem: { nodes: EcosystemNode[], links: EcosystemLink[] }
+- mockBengalTigerPopulation: Array<{ year: number, population: number }>
+- exampleSpecies: Species[] (6 species for the chips on analyze page)
+
+====================================================
+API LAYER (lib/api.ts)
+====================================================
+
+All functions should:
+1. First check if we have mock data
+2. If NEXT_PUBLIC_USE_MOCK=true, return mock data
+3. Otherwise call the real FastAPI backend at 
+   NEXT_PUBLIC_API_URL
+
+Functions to implement:
+- identifySpecies(file: File): Promise<IdentificationResult>
+- searchSpecies(query: string): Promise<Species[]>
+- getSpecies(id: string): Promise<Species>
+- getIntelligenceReport(speciesId: string, dimension: string): Promise<IntelligenceReport>
+- getEcosystemGraph(speciesId: string): Promise<{ nodes, links }>
+
+====================================================
+ANIMATIONS — COMPLETE SPEC
+====================================================
+
+1. PAGE TRANSITIONS:
+   Wrap all pages in a Framer Motion AnimatePresence.
+   Each page: initial opacity 0, y: 10 → 
+   animate opacity 1, y: 0 over 0.4s
+
+2. SCROLL REVEAL (useScrollReveal hook):
+   All sections animate in when they enter viewport.
+   Use Framer Motion whileInView.
+   Standard entry: opacity 0, y: 30 → opacity 1, y: 0
+   Duration: 0.6s, ease: "easeOut"
+   Stagger children by 0.1s using staggerChildren
+
+3. SCANNING EFFECT (on image upload and species hero):
+   A teal line sweeps top to bottom once.
+   CSS-only using animation: scan 1.5s linear once
+
+4. NUMBER COUNTER:
+   Stats on landing page count up from 0 on scroll.
+   Use a custom hook useCountUp(target, duration).
+
+5. TAB TRANSITIONS:
+   Framer Motion AnimatePresence on tab content.
+   Fade + slight horizontal slide (x: 10 → x: 0)
+
+6. CONFIDENCE BAR:
+   CSS transition width from 0 to value% over 1s
+   on mount. Add slight overshoot using 
+   cubic-bezier(0.34, 1.56, 0.64, 1)
+
+7. GRAPH PARTICLES:
+   Landing page hero has CSS-only floating particles.
+   NO JavaScript animation for performance.
+
+====================================================
+RESPONSIVE BEHAVIOR
+====================================================
+
+Breakpoints (Tailwind defaults):
+sm: 640px, md: 768px, lg: 1024px, xl: 1280px
+
+Landing page hero: 
+  Desktop: 72px headline / Mobile: 40px headline
+
+How It Works section:
+  Desktop: 5 items in one horizontal row
+  Tablet: 2+2+1 grid
+  Mobile: vertical list
+
+Intelligence pillars:
+  Desktop: 3+3+1
+  Tablet: 2 columns
+  Mobile: 1 column
+
+Species result page:
+  Desktop: SpeciesHero is two columns
+  Mobile: image on top, info below (single column)
+
+Intelligence Hub tabs:
+  Desktop: horizontal tab bar
+  Mobile: horizontally scrollable tab bar 
+  (overflow-x: auto, -webkit-overflow-scrolling: touch)
+
+Ecosystem graph:
+  Mobile: height reduced to 280px, simplified nodes
+
+====================================================
+ENVIRONMENT VARIABLES (.env.local)
+====================================================
+
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_USE_MOCK=true
+
+====================================================
+NEXT.JS CONFIG (next.config.ts)
+====================================================
+
+Enable image optimization for external domains.
+Add GBIF and iNaturalist image domains:
+images.remotePatterns: [
+  { protocol: 'https', hostname: 'inaturalist-open-data.s3.amazonaws.com' },
+  { protocol: 'https', hostname: 'static.inaturalist.org' },
+]
+
+====================================================
+PACKAGE.JSON DEPENDENCIES
+====================================================
+
+{
+  "dependencies": {
+    "next": "14.2.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "typescript": "^5",
+    "tailwindcss": "^3",
+    "framer-motion": "^11",
+    "recharts": "^2.12",
+    "react-force-graph-2d": "^1.25",
+    "lucide-react": "^0.400",
+    "@types/node": "^20",
+    "@types/react": "^18"
+  }
+}
+
+====================================================
+FINAL IMPLEMENTATION NOTES
+====================================================
+
+1. ALL TEXT CONTENT: Use the exact mock text written 
+   above. Do not use Lorem Ipsum anywhere.
+
+2. ALL COLORS: Use the CSS variables defined above.
+   Never hardcode hex colors in components — 
+   always reference the variable.
+
+3. DARK MODE: The site is dark-mode-only. Do not 
+   implement a light mode toggle.
+
+4. FONTS: Load via next/font/google in layout.tsx 
+   for performance. Apply as CSS variables.
+
+5. IMAGES: For mock species images, use 
+   picsum.photos with consistent seeds:
+   Bengal Tiger: https://picsum.photos/seed/tiger/800/600
+   Use real images when API is connected.
+
+6. NO EXTERNAL UI LIBRARIES: Do not use shadcn/ui, 
+   Material UI, Chakra, or Radix. Build all 
+   components from scratch using Tailwind.
+
+7. PERFORMANCE: 
+   - Use next/image for all images
+   - Use dynamic imports for heavy components 
+     (React Force Graph, Recharts)
+   - Add loading skeletons for the intelligence 
+     tab content
+
+8. LOADING STATES: 
+   When NEXT_PUBLIC_USE_MOCK=false and API calls 
+   are made, show skeleton loaders that match 
+   the layout of the content they're replacing.
+   Skeleton: background --void-3, border-radius matches 
+   the content, subtle pulse animation:
+   @keyframes shimmer {
+     0% { opacity: 0.4 }
+     50% { opacity: 0.7 }
+     100% { opacity: 0.4 }
+   }
+
+9. START WITH MOCK DATA ON: Set 
+   NEXT_PUBLIC_USE_MOCK=true so the full UI 
+   experience works immediately without the backend.
+
+10. BUILD ORDER: 
+    1. globals.css (all variables)
+    2. UI primitives (GlowCard, DataPill, etc.)
+    3. Navbar + Footer
+    4. Landing page sections
+    5. Analyze page
+    6. Species result page
+    7. Wire up mock data
+    8. Add animations last
+
+Start building. Make it elite.

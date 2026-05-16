@@ -1,0 +1,109 @@
+The Evolutionary Lineage section currently feels too text-heavy and messy.
+
+I want you to redesign both:
+1. the AI response formatting
+2. the UI presentation
+
+so users can quickly understand the information at a glance.
+
+====================================================
+MAIN PROBLEMS
+====================================================
+
+1. The paragraph is too long and overwhelming
+2. Important insights are hidden inside huge text blocks
+3. Users cannot quickly scan the information
+4. The section does not feel visually premium
+5. The purple elements at the bottom are hiding text due to poor contrast/styling
+
+====================================================
+WHAT I WANT
+====================================================
+
+----------------------------------------------------
+1. SIMPLIFY THE AI RESPONSE FORMAT
+----------------------------------------------------
+
+Instead of giant paragraphs,
+break the response into:
+
+- short sections
+- bullet points
+- highlighted keywords
+- quick insights
+- mini cards
+
+Example structure:
+
+• Family: Hylobatidae  
+• Closest Relative: Southern White-cheeked Gibbon  
+• Divergence Time: ~4 million years ago  
+• Key Adaptation: Long forelimbs for brachiation  
+• Native Region: Southeast Asia  
+
+Then:
+- short readable explanation below
+- maximum 3–4 lines per paragraph
+
+====================================================
+2. MAKE THE UI MORE SCANNABLE
+====================================================
+
+Need:
+- cleaner spacing
+- better typography hierarchy
+- highlighted scientific terms
+- concise cards
+- better alignment
+- readable layout
+
+The section should feel:
+- elegant
+- premium
+- scientific
+- easy to consume quickly
+
+====================================================
+3. FIX THE PURPLE BUTTON/BAR ISSUE
+====================================================
+
+At the bottom there are purple UI elements where the text becomes hidden/unreadable.
+
+Fix:
+- contrast
+- background color
+- text visibility
+- overflow issues
+- z-index/layout problems
+
+Ensure:
+- all text is fully readable
+- no hidden labels
+- proper padding and spacing
+
+====================================================
+4. IMPORTANT UX GOAL
+====================================================
+
+The user should understand the key evolutionary insights within 5 seconds of seeing the section.
+
+Prioritize:
+- visual clarity
+- information hierarchy
+- readability
+- quick comprehension
+
+====================================================
+5. DO NOT REMOVE
+====================================================
+
+Keep:
+- the evolutionary graph/tree
+- scientific aesthetic
+- futuristic UI style
+
+Only improve:
+- readability
+- formatting
+- clarity
+- visual hierarchy

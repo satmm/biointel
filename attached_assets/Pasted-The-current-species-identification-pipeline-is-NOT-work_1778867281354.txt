@@ -1,0 +1,230 @@
+The current species identification pipeline is NOT working correctly.
+
+Right now the application is returning the same dummy/demo response for almost every uploaded image.
+
+However:
+✅ Search by species name feature is working correctly.
+
+So DO NOT modify or break the existing text/species-name search pipeline.
+
+The issue exists ONLY in the image inference pipeline.
+
+====================================================
+MAIN PROBLEM
+====================================================
+
+Current issues:
+1. Same response for different uploaded images
+2. Mock/demo data always returned
+3. BioCLIP inference likely failing silently
+4. No proper confidence validation
+5. No real image understanding happening
+6. Fallback system is incorrect
+7. Fake species intelligence generated even for unknown images
+
+====================================================
+IMPORTANT REQUIREMENTS
+====================================================
+
+DO NOT show:
+- fake species
+- hardcoded demo responses
+- placeholder intelligence
+- fabricated conservation data
+
+If the model cannot confidently identify the species:
+- explicitly say identification failed
+- ask user to upload clearer image
+- show top possible matches only
+- show confidence percentages
+- never hallucinate research data
+
+====================================================
+WHAT I WANT YOU TO FIX
+====================================================
+
+----------------------------------------------------
+1. DEBUG BIOCLIP PIPELINE
+----------------------------------------------------
+
+Properly verify:
+- model loading
+- tokenizer loading
+- inference execution
+- image preprocessing
+- label matching
+- embeddings generation
+- confidence calculation
+
+Log:
+- raw model outputs
+- similarity scores
+- prediction ranking
+
+====================================================
+2. REAL IMAGE ANALYSIS
+====================================================
+
+The system must:
+1. preprocess uploaded image correctly
+2. run actual BioCLIP inference
+3. compute similarity against species labels
+4. rank predictions
+5. return top predictions
+
+====================================================
+3. CONFIDENCE VALIDATION
+====================================================
+
+Add strict thresholds.
+
+Example:
+- confidence > 75% → verified result
+- confidence 50–75% → uncertain result
+- confidence < 50% → identification failed
+
+For failed identifications:
+DO NOT generate fake intelligence.
+
+Instead show:
+{
+  status: "uncertain",
+  message: "Unable to confidently identify species. Please upload a clearer image.",
+  top_matches: [...]
+}
+
+====================================================
+4. REMOVE FAKE DEMO FALLBACKS
+====================================================
+
+Currently there are likely:
+- hardcoded tiger responses
+- static JSON fallbacks
+- demo species generators
+
+Remove all fake fallback logic from IMAGE upload inference flow.
+
+IMPORTANT:
+Do NOT remove the working species-name search functionality.
+
+====================================================
+5. ADD TOP-K PREDICTIONS
+====================================================
+
+Return:
+- top 5 predictions
+- confidence percentages
+- scientific names if available
+
+Example:
+[
+  {
+    species: "Bengal Tiger",
+    confidence: 82.4
+  },
+  {
+    species: "Siberian Tiger",
+    confidence: 71.1
+  }
+]
+
+====================================================
+6. ADD PROPER LOGGING
+====================================================
+
+Need logs for:
+- uploaded image metadata
+- preprocessing
+- model inference time
+- similarity scores
+- final predictions
+- confidence validation
+- fallback decisions
+
+====================================================
+7. VERIFY HUGGINGFACE TOKEN USAGE
+====================================================
+
+Ensure:
+- HUGGINGFACE_TOKEN is actually used
+- authenticated model access works
+- BioCLIP model downloads correctly
+
+====================================================
+8. IMPLEMENT REAL FAILURE STATES
+====================================================
+
+If:
+- image is blurry
+- unsupported species
+- model uncertainty high
+- inference fails
+
+Then show:
+- graceful failure response
+- retry suggestions
+- no hallucinated research data
+
+====================================================
+9. IMPORTANT UX REQUIREMENT
+====================================================
+
+The backend response must clearly indicate:
+
+{
+  success: true/false,
+  confidence_level: "high/medium/low",
+  verified: true/false
+}
+
+Frontend can use this for:
+- verified badges
+- uncertainty warnings
+- retry states
+
+====================================================
+10. OPTIONAL IMPROVEMENT
+====================================================
+
+If BioCLIP confidence is low:
+run secondary validation using:
+- iNaturalist model
+
+Then:
+- compare predictions
+- merge confidence
+- improve reliability
+
+====================================================
+11. MOST IMPORTANT RULE
+====================================================
+
+NEVER hallucinate scientific intelligence.
+
+If identification is uncertain:
+DO NOT generate:
+- fake habitat
+- fake conservation data
+- fake research summaries
+- fake ecosystem analysis
+
+Only generate intelligence when prediction confidence is high enough.
+
+====================================================
+12. FINAL OUTPUT
+====================================================
+
+Fix and improve:
+- image inference pipeline
+- confidence scoring
+- species matching
+- logging
+- failure handling
+- prediction ranking
+- frontend response format
+
+DO NOT modify the working species-name search feature.
+
+The application should behave like:
+a real AI species intelligence platform,
+NOT a demo generator.

@@ -1,0 +1,282 @@
+You are a senior AI infrastructure engineer and FastAPI backend architect.
+
+The frontend for my AI-powered Species Intelligence Platform is already completed.
+
+Now build ONLY the backend MVP architecture and AI integration layer.
+
+IMPORTANT:
+Use ONLY the EXACT models and technologies specified below.
+
+DO NOT replace models.
+DO NOT use alternatives.
+DO NOT introduce paid APIs.
+DO NOT over-engineer.
+
+====================================================
+FIXED AI STACK (MANDATORY)
+====================================================
+
+----------------------------------------------------
+1. SPECIES IDENTIFICATION MODEL
+----------------------------------------------------
+
+PRIMARY MODEL:
+BioCLIP
+
+Purpose:
+- biodiversity-aware image understanding
+- species identification
+- semantic biological recognition
+
+Use HuggingFace implementation.
+
+----------------------------------------------------
+2. BACKUP SPECIES MODEL
+----------------------------------------------------
+
+Use:
+iNaturalist Vision Model
+
+Purpose:
+- fallback classification
+- species confidence comparison
+
+====================================================
+3. EMBEDDING MODEL
+====================================================
+
+Use:
+BAAI/bge-small-en-v1.5
+
+Purpose:
+- semantic similarity
+- future vector search
+- related species retrieval
+- RAG preparation
+
+====================================================
+4. LLM FOR AI SUMMARIES
+====================================================
+
+Use:
+Groq API
+
+Model:
+llama-3.3-70b-versatile
+
+Purpose:
+- beginner summaries
+- scientific summaries
+- conservation insights
+- structured intelligence generation
+
+====================================================
+5. VECTOR DATABASE
+====================================================
+
+Use:
+pgvector with PostgreSQL
+
+====================================================
+6. STORAGE
+====================================================
+
+Use:
+Supabase Storage
+
+====================================================
+7. BACKEND FRAMEWORK
+====================================================
+
+Use:
+FastAPI
+
+====================================================
+PROJECT GOAL
+====================================================
+
+The backend should support:
+
+1. Species image upload
+2. Species identification using BioCLIP
+3. Fallback classification using iNaturalist model
+4. AI-generated research summaries
+5. Structured species intelligence response
+6. Species search
+7. Related species preparation
+8. Future vector search support
+9. Future RAG support
+
+====================================================
+MVP IMPLEMENTATION ONLY
+====================================================
+
+DO NOT implement:
+- advanced genomics engine
+- climate simulation engine
+- AI agents
+- graph neural networks
+- distributed inference
+- heavy ML training
+
+ONLY prepare scalable architecture.
+
+====================================================
+API FEATURES
+====================================================
+
+Build APIs for:
+
+----------------------------------------------------
+1. IMAGE UPLOAD
+----------------------------------------------------
+
+- validate image
+- preprocess image
+- upload/store image
+- generate image metadata
+
+----------------------------------------------------
+2. SPECIES IDENTIFICATION
+----------------------------------------------------
+
+Pipeline:
+1. Run BioCLIP inference
+2. Generate confidence scores
+3. Run fallback iNaturalist classification
+4. Merge/validate prediction
+5. Return structured response
+
+====================================================
+3. AI SUMMARY GENERATION
+====================================================
+
+Using Groq + Llama 3:
+Generate:
+- beginner-friendly summary
+- scientific summary
+- conservation insight
+
+====================================================
+4. STRUCTURED RESPONSE FORMAT
+====================================================
+
+Return:
+
+{
+  species_name,
+  scientific_name,
+  confidence,
+  category,
+  conservation_status,
+  habitat,
+  diet,
+  lifespan,
+  ecosystem_role,
+  related_species,
+  predators,
+  ai_summary,
+  scientific_summary,
+  conservation_insight
+}
+
+====================================================
+5. EMBEDDINGS PIPELINE
+====================================================
+
+Use:
+BAAI/bge-small-en-v1.5
+
+Prepare:
+- embedding service
+- vector generation
+- pgvector storage
+
+Even if semantic search is not fully implemented yet.
+
+====================================================
+6. DATABASE TABLES
+====================================================
+
+Create tables for:
+- species
+- uploads
+- embeddings
+- ecosystem_relationships
+- research_sections
+
+====================================================
+7. PROJECT STRUCTURE
+====================================================
+
+backend/
+  app/
+    api/
+    services/
+    ai/
+    embeddings/
+    database/
+    models/
+    schemas/
+    utils/
+    core/
+
+====================================================
+8. ENGINEERING REQUIREMENTS
+====================================================
+
+Need:
+- async FastAPI
+- service-based architecture
+- reusable AI service abstraction
+- environment variable support
+- clean logging
+- structured error handling
+- modular architecture
+
+====================================================
+9. ENVIRONMENT VARIABLES
+====================================================
+
+Create .env.example:
+
+GROQ_API_KEY=
+HUGGINGFACE_TOKEN=
+SUPABASE_URL=
+SUPABASE_KEY=
+DATABASE_URL=
+
+====================================================
+10. REQUIRED OUTPUT
+====================================================
+
+Generate:
+- complete FastAPI backend
+- API routes
+- AI service layer
+- BioCLIP integration
+- Groq integration
+- pgvector setup
+- Supabase storage integration
+- Docker setup
+- requirements.txt
+- setup instructions
+- seed data
+- mock species dataset
+
+====================================================
+IMPORTANT
+====================================================
+
+Think like:
+- a production AI engineer
+- a scientific systems architect
+- a scalable backend engineer
+- a startup CTO
+
+The backend should feel:
+- research-grade
+- modular
+- scalable
+- clean
+- production-ready
