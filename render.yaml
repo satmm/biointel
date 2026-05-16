@@ -3,11 +3,13 @@ services:
     name: biointel-api
     runtime: python
     rootDir: artifacts/biointel-api
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: BASE_PATH
         value: /backend
+      - key: PYTHON_VERSION
+        value: 3.12.13
       - key: SESSION_SECRET
         generateValue: true
       - key: GROQ_API_KEY
