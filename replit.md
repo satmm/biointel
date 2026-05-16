@@ -43,7 +43,7 @@ An AI-powered Species Intelligence & Research Platform. Upload any species image
 
 ## Product
 
-- **Landing page**: Cinematic hero, About, How It Works (5-step), 7 Intelligence Pillars, live ecosystem force graph preview, Future Vision + stats.
+- **Landing page**: Cinematic hero page, About, How It Works (5-step), 7 Intelligence Pillars, live ecosystem force graph preview, Future Vision + stats.
 - **Analyze page**: Upload zone with drag-and-drop, image preview + scan effect, search by name tab, 6 example species chips.
 - **Species page**: Species hero with scanning animation + corner brackets, quick facts grid, 5-tab Intelligence Hub (Evolution, Anatomy, Behavior, Ecosystem, Conservation) with phylogenetic tree SVG, Recharts charts, force graph, and population trend chart.
 
